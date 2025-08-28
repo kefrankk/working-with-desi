@@ -1,0 +1,4 @@
+
+# ignores the virtual environment folder
+/env
+
