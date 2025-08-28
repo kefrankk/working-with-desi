@@ -1,0 +1,21 @@
+[project]
+name = "working-with-desi"
+version = "0.1.0"
+description = ""
+authors = [
+    {name = "kefrankk",email = "ke.heckler95@gmail.com"}
+]
+readme = "README.md"
+requires-python = ">=3.10,<3.12"
+dependencies = [
+    "astro-datalab (>=2.24.0,<3.0.0)",
+    "sparclclient (>=1.2.5,<2.0.0)"
+]
+
+
+[build-system]
+requires = ["poetry-core>=2.0.0,<3.0.0"]
+build-backend = "poetry.core.masonry.api"
+
+[tool.poetry]
+package-mode = false
