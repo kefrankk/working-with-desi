@@ -5,10 +5,23 @@
 
 
 
-### 🚀 How to Use
+## 🚀 How to Use
+
+For this project, it is requisite to have `Poetry` installed in your machine. 
+If you do not have it installed, you can follow these steps:
+
+- Install via the official link
+```
+curl -sSL https://install.python-poetry.org | python3 -
+```
+
+- Add Poetry to your `PATH`:
+```
+export PATH="$HOME/.local/bin:$PATH"
+```
 
 
-Follow these steps to set up and run the project:
+### Follow these steps to set up and run the project:
 
 #### 1. Clone the repository
 
@@ -16,27 +29,9 @@ Follow these steps to set up and run the project:
 git clone https://github.com/kefrankk/working-with-desi.git
 cd working-with-desi
 ```
-#### 2. Create and activate a virtual environment
+#### 2. Activate the Poetry virtual environment
 
 ```
-python -m venv env
+poetry install
 ```
 
-- **Windows**
-
-```
-env\Scripts\activate
-```
-
-- **Linux/Mac**
-
-```
-source env/bin/activate
-```
-
-
-#### 3. Install dependencies  
-
-``` 
-pip install -r requirements.txt
-```
