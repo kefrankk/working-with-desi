@@ -61,19 +61,19 @@ def plot_spec(result):
 def match_galaxies(splus, survey):
     # print(splus, survey)
     """
-    Matches the galaxies between the SPLUS and SDSS datasets.
-
+    Matches galaxies between the SPLUS dataset and another survey.
+    
     Parameters
     ----------
     splus : pandas.DataFrame
-        DataFrame containing the SPLUS galaxies.
-    sdss : pandas.DataFrame
-        DataFrame containing the SDSS galaxies.
-
+        DataFrame containing galaxies from the SPLUS survey.
+    survey : pandas.DataFrame
+        DataFrame containing galaxies from the comparison survey.
+    
     Returns
     -------
     df_common_filtered : pandas.DataFrame
-        DataFrame with the common galaxies between SPLUS and SDSS.
+        DataFrame containing galaxies found in both SPLUS and the comparison survey.
     """
 
     # Convert the RA and DEC columns to astropy SkyCoord objects
