@@ -58,7 +58,7 @@ def plot_spec(result):
     plt.plot(wavelength, model, color='r', label='Model spectrum')
     
 
-def match_galaxies(splus, survey, type='sdss'):
+def match_galaxies(splus, survey):
     # print(splus, survey)
     """
     Matches the galaxies between the SPLUS and SDSS datasets.
