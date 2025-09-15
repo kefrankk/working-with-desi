@@ -1,2 +1,4 @@
 
-
+src/__pycache__
+data/objects_with_pointing_problem.csv
+data/DESI_DR1_spec_A194.parquet
