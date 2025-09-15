@@ -14,6 +14,20 @@ from dl import authClient as ac
 from getpass import getpass
 
 def get_spec(cons):
+    """
+    Queries the SPARCL database and returns a pandas DataFrame containing the results of the query.
+
+    Parameters
+    ----------
+    cons : dict
+        A dictionary containing the constraints to be used in the query.
+
+    Returns
+    -------
+    results_desi_dr1 : pandas.DataFrame
+        A pandas DataFrame containing the results of the query.
+    """
+    
     client = SparclClient()
     
     out = ['sparcl_id', 'ra', 'dec', 'redshift', 'spectype', 'objtype', 'data_release', 'desiname', 'zcat_nspec', 'targetid']
