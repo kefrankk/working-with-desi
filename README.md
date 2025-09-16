@@ -1,10 +1,6 @@
 # Working with DESI DR1 data
 
 
-
-
-
-
 ## 🚀 How to Use
 
 This project requires [`Poetry`](https://python-poetry.org/) to be installed on your machine.  
@@ -35,6 +31,6 @@ cd working-with-desi
 
 ```
 poetry install
-source .venv/bin/activate
+poetry run python src/main.py
 ```
 This will automatically create and activate a virtual environment for the project.
