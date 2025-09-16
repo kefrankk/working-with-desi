@@ -72,7 +72,7 @@ Type the redshift range (X.XXX, Y.YYY): 0.01, 0.05
 
 - The script queries SPARCL for galaxies in DESI DR1 that match your ranges.
 
-- Results are saved automatically in the folder ./data/ as a compressed .parquet file.
+- Results are saved automatically in the folder `./data/` as a compressed `.parquet` file.
 
 - If the parquet file already exists, it will be reused instead of running a new query.
 
@@ -95,9 +95,9 @@ Do you want to create a fits file? (y/n): n
 
 - **Saving directory**: by default, results are saved in `./data/`. You can edit this in `src/main.py` if you want another location.
 
-- **Spectral type**: currently, the query is restricted to spectype = 'GALAXY'. You can modify this in the cons dictionary inside `main()` in `src/main.py`.
+- **Spectral type**: currently, the query is restricted to `spectype = 'GALAXY'`. You can modify this in the cons dictionary inside `main()` in `src/main.py`.
 
-- **Output formats**: choose .parquet, .txt, .fits, or a combination.
+- **Output formats**: choose `.parquet`, `.txt`, `.fits`, or a combination.
 
 - **File name**: default is `DESI_DR1_spec.parquet`, but you can change it in the function `main(saving_dir)` in `src/main.py`.
 
