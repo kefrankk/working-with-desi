@@ -3,6 +3,8 @@ import numpy as np
 import pandas as pd
 from scipy.interpolate import interp1d
 import matplotlib.pyplot as plt
+from astropy.wcs import WCS
+from astropy.io import fits
 
 def interpolate_spec(wave, flux, eflux):
     """
@@ -77,3 +79,46 @@ def to_txt(data: pd.DataFrame, saving_dir: str):
         df = interpolate_spec(wave=rest_wave, flux=flux, eflux=eflux)
 
         df.to_csv(f'{saving_dir}{sparclid}.txt', sep=' ', header=False, index=False)
+
+
+def to_fits(data, saving_dir):
+
+    for obj, row in data.iterrows():
+        wavelength  = row['wavelength']
+        flux        = row['flux']
+        ivar        = row['ivar']
+
+        sparclid    = row['sparcl_id']
+
+        cdelt = np.median(np.diff(wavelength))
+        crpix = 1
+        crval = wavelength[0]
+
+        wcs = WCS(naxis=1)
+        wcs.wcs.crpix  = [crpix]
+        wcs.wcs.cdelt  = [cdelt]
+        wcs.wcs.crval  = [crval]
+        wcs.wcs.ctype  = ['WAVE']
+
+        header = wcs.to_header()
+
+        # Creates the MEF file
+        h = fits.HDUList()
+        hdu = fits.PrimaryHDU(header=header)
+        hdu.name = 'PRIMARY'
+        h.append(hdu)
+
+        # Creates the observed spectrum extension
+        hdu = fits.ImageHDU(data=flux, header=header)
+        hdu.name = 'FLUX'
+        h.append(hdu)
+
+        # Creates the ivar extension.
+        hdu = fits.ImageHDU(data=ivar, header=header)
+        hdu.name = 'IVAR'
+        h.append(hdu)
+
+        h.writeto(f'{saving_dir}{sparclid}.fits', overwrite=True)
+
+
+        
