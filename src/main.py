@@ -5,7 +5,7 @@ import spectrum_io
 import pandas as pd
 
 
-def main(): 
+def main(saving_dir): 
 
     """
     Retrieves DESI spectra for a given object name and RA, DEC and Redshift ranges.
@@ -28,69 +28,63 @@ def main():
 
     name = 'DESI_DR1_spec.parquet'
 
-    if not os.path.exists('./data/'):
-        os.makedirs('./data/')
-
-    if name not in os.listdir('./data/'):
+    if name not in os.listdir(saving_dir):
 
         # -------->  Here you need to define the RA, DEC and Redshift ranges of the objects that you want to retrieve from DESI.  < -----------------------------------
-        ra_range = [0, 10] 
-        dec_range = [-10, 10]
-        redshift_range = [0, 0.1]
 
-        if redshift_range:
-            print(f"Filtering by RA: {ra_range} and DEC: {dec_range} and Redshift: {redshift_range}\n")
-        else: 
-            print(f"Filtering by RA: {ra_range} and DEC: {dec_range}\n")
-
-        cons = {'spectype': ['GALAXY'],
-                'redshift':redshift_range,
-                'ra': ra_range,
-                'dec': dec_range,
-                'data_release': ['DESI-DR1']}
+        ra_min, ra_max = utils.get_range("Type the right ascension range (X.XXX, Y.YYY): ", "RA")
+        dec_min, dec_max = utils.get_range("Type the declination range (X.XXX, Y.YYY): ", "Dec")
+        
+        do_redshift = input('Do you want to search by redshift too? (y/n): ').lower()
+        if do_redshift in ["y", "yes"]:
+            z_min, z_max = utils.get_range("Type the redshift range (X.XXX, Y.YYY): ", "z")
+            print(f"Filtering by RA: [{ra_min},{ra_max}] and DEC: [{dec_min},{dec_max}] and Redshift: [{z_min},{z_max}]\n")
+            cons = {'spectype': ['GALAXY'],
+                    'ra': [ra_min,ra_max],
+                    'dec': [dec_min,dec_max],
+                    'redshift':[z_min,z_max],
+                    'data_release': ['DESI-DR1']}        
+        else:
+            print(f"Filtering by RA: [{ra_min},{ra_max}] and DEC: [{dec_min},{dec_max}]\n")
+            cons = {'spectype': ['GALAXY'],
+                    'ra': [ra_min,ra_max],
+                    'dec': [{dec_min,dec_max}],
+                    'data_release': ['DESI-DR1']} 
+            
 
         results_DESI_DR1 = utils.get_spec(cons) # returns a Pandas DataFrame with the results
-        if redshift_range:
-            print(f"Retrieved data for RA: {ra_range} and DEC: {dec_range} and Redshift: {redshift_range}\n")
+        count = results_DESI_DR1['spectype'].count()
+        if do_redshift in ["y", "yes"]:
+            print(f"Retrieved {count} galaxies for RA: [{ra_min},{ra_max}] and DEC: [{dec_min},{dec_max}] and Redshift: [{z_min},{z_max}]\n")
         else: 
-            print(f"Retrieved data for RA: {ra_range} and DEC: {dec_range}\n")
+            print(f"Retrieved {count} galaxies for RA: [{ra_min},{ra_max}] and DEC: [{dec_min},{dec_max}]\n")
 
         # Saving the objects to a new parquet file 
-        results_DESI_DR1.to_parquet(f'./data/{name}', index=False, engine='pyarrow', compression='snappy')
+        results_DESI_DR1.to_parquet(f'{saving_dir}{name}', index=False, engine='pyarrow', compression='snappy')
+        print(f'Saved retrieved data to {saving_dir} named as {name}.')
 
         return results_DESI_DR1
 
     else:
         print(f'Already found parquet file for {name}. \n')
-        results_DESI_DR1 = pd.read_parquet(f'./data/{name}', engine='pyarrow')
+        results_DESI_DR1 = pd.read_parquet(f'{saving_dir}{name}', engine='pyarrow')
         return results_DESI_DR1
-
-
-def save_to_txt(data, saving_dir):
-    """
-    Saves the given data to a .txt file with wavelength, flux and flux error for Starlight input.
-
-    Parameters
-    ----------
-    data : pandas.DataFrame
-        The data to be saved to a .txt file. It should have columns named 'wavelength', 'flux' and 'eflux'.
-    saving_dir : str
-        The directory where the .txt file will be saved.
-
-    Returns
-    -------
-    None
-    """
-    spectrum_io.to_txt(data, saving_dir)
 
 
 if __name__ == "__main__":
     
-    data = main()
+    if not os.path.exists('./data/'):
+        os.makedirs('./data/')
 
-    do_save_txt = input('Do you want to create a .txt file with wavelength, flux and flux error for Starlight input? (y/n) ')
+    saving_dir = './data/'
+    data = main(saving_dir)
 
-    if do_save_txt.lower() == 'y':
-        saving_dir = './data/'
-        save_to_txt(data)
-        print('Finished!')
+    do_save_txt = input('Do you want to create a .txt file with wavelength, flux and flux error for Starlight input? (y/n): ').lower() 
+    if do_save_txt == 'y':
+        spectrum_io.to_txt(data, saving_dir)
+
+    do_save_fits = input('Do you want to create a fits file? (y/n): ').lower()
+    if do_save_fits == 'y':
+        spectrum_io.to_fits(data, saving_dir)
+    
+    print('Finished!')
