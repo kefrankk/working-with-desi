@@ -21,12 +21,3 @@ build-backend = "poetry.core.masonry.api"
 
 [tool.poetry]
 package-mode = false
-
-[tool.poetry]
-name = "utils"
-version = "0.1.0"
-description = ""
-authors = ["Kelly Heckler <ke.heckler95@gmail.com>"]
-packages = [
-    { include = "utils", from = "src" }
-]
