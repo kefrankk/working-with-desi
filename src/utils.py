@@ -1,4 +1,5 @@
 
+import re
 import pandas as pd
 import astropy.units as u
 import matplotlib.pyplot as plt
@@ -139,3 +140,22 @@ def match_galaxies(splus, survey):
     df_common_filtered = df_common[mask]
 
     return df_common_filtered
+
+
+
+def get_range(prompt, coord_name):
+    """Get and validate a coordinate range input (RA or Dec)."""
+    pattern = r'^\s*(-?\d+(\.\d+)?)\s*,\s*(-?\d+(\.\d+)?)\s*$'
+    while True:
+        user_input = input(prompt)
+        match = re.match(pattern, user_input)
+        if match:
+            val_min = float(match.group(1))
+            val_max = float(match.group(3))
+            if val_min < val_max:
+                return val_min, val_max
+            else:
+                print(f"⚠️ {coord_name} minimum must be smaller than maximum. Try again.")
+        else:
+            print(f"⚠️ Invalid format for {coord_name}. Use: X.XXX, Y.YYY")
+

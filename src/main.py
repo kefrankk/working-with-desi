@@ -82,9 +82,3 @@ if __name__ == "__main__":
     do_save_txt = input('Do you want to create a .txt file with wavelength, flux and flux error for Starlight input? (y/n): ').lower() 
     if do_save_txt == 'y':
         spectrum_io.to_txt(data, saving_dir)
-
-    do_save_fits = input('Do you want to create a fits file? (y/n): ').lower()
-    if do_save_fits == 'y':
-        spectrum_io.to_fits(data, saving_dir)
-    
-    print('Finished!')
